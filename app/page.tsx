@@ -1,65 +1,118 @@
-import Image from "next/image";
+import { ImpactWall } from "@/components/ImpactWall";
+import { TrendingCampaigns } from "@/components/TrendingCampaigns";
+import { RecentActions } from "@/components/RecentActions";
+import { SubmitActionWizard } from "@/components/SubmitActionWizard";
+import { AuthDialog } from "@/components/AuthDialog";
+import { CreateCampaignDialog } from "@/components/CreateCampaignDialog";
+import { Button } from "@/components/ui/button";
+import { ArrowDown } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <main className="flex-1 flex flex-col">
+      {/* ====== Sticky Navigation — mobile-optimized ====== */}
+      <header className="w-full bg-slate-950/80 backdrop-blur-lg border-b border-white/5 sticky top-0 z-50">
+        <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
+          <div className="font-black text-xl md:text-2xl tracking-tighter text-white cursor-pointer">
+            Waist<span className="text-red-500">Hit</span>
+          </div>
+          {/* Desktop nav links only */}
+          <nav className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-400">
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="#submit"
+              className="hover:text-white transition-colors duration-200"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
+              Submit
+            </a>
             <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="#campaigns"
+              className="hover:text-white transition-colors duration-200"
             >
-              Learning
-            </a>{" "}
-            center.
+              Campaigns
+            </a>
+            <a
+              href="#feed"
+              className="hover:text-white transition-colors duration-200"
+            >
+              Feed
+            </a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <AuthDialog />
+            <CreateCampaignDialog />
+            <a href="#submit">
+              <Button className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold rounded-full h-10 md:h-11 px-4 md:px-5 text-sm shadow-lg shadow-red-600/20">
+                Submit
+              </Button>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* ====== Hero + Impact Wall ====== */}
+      <ImpactWall />
+
+      {/* ====== CTA - Submit Action ====== */}
+      <section
+        id="submit"
+        className="w-full py-12 md:py-24 bg-slate-950 relative overflow-hidden"
+      >
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/4 w-[300px] md:w-[500px] h-[200px] md:h-[300px] bg-red-600/5 rounded-full blur-[80px] md:blur-[100px]" />
+        </div>
+
+        <div className="container mx-auto px-5 relative z-10">
+          <div className="text-center mb-8 md:mb-12 animate-fade-up">
+            <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-3">
+              Ready to make your
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
+                {" "}
+                impact
+              </span>
+              ?
+            </h2>
+            <p className="text-slate-500 text-sm md:text-base max-w-md mx-auto">
+              Every cancellation adds up. Submit yours to increase the
+              collective pressure.
+            </p>
+            <ArrowDown className="h-5 w-5 text-red-500 mx-auto mt-4 animate-bounce" />
+          </div>
+          <SubmitActionWizard />
+        </div>
+      </section>
+
+      {/* ====== Trending Campaigns ====== */}
+      <div id="campaigns">
+        <TrendingCampaigns />
+      </div>
+
+      {/* ====== Recent Actions Feed ====== */}
+      <div id="feed">
+        <RecentActions />
+      </div>
+
+      {/* ====== Footer ====== */}
+      <footer className="w-full py-8 md:py-10 bg-slate-950 text-slate-500 border-t border-white/5 safe-bottom">
+        <div className="container mx-auto px-5 flex flex-col items-center gap-4 md:flex-row md:justify-between">
+          <div className="font-black text-xl tracking-tighter text-white/30">
+            Waist<span className="text-red-500/50">Hit</span>
+          </div>
+          <p className="text-xs text-slate-600 text-center">
+            © {new Date().getFullYear()} WaistHit. Hit them at the waist.
           </p>
+          <div className="flex gap-6 text-xs text-slate-600">
+            <a href="#" className="hover:text-slate-400 transition-colors py-2">
+              About
+            </a>
+            <a href="#" className="hover:text-slate-400 transition-colors py-2">
+              Privacy
+            </a>
+            <a href="#" className="hover:text-slate-400 transition-colors py-2">
+              GitHub
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }
