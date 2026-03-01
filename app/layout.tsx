@@ -7,9 +7,9 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "WaistHit - Hit them at the waist",
+  title: "Boya - Frappe au portefeuille",
   description:
-    "Public cancellations, real numbers. Economic pressure for change.",
+    "Résiliations publiques, chiffres réels. La pression économique au service du changement.",
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={`${inter.className} ${inter.variable} antialiased min-h-screen bg-slate-950 flex flex-col`}
       >

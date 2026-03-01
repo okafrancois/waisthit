@@ -17,7 +17,7 @@ export function ImpactWall() {
       bgGlow: "from-red-500/20 to-transparent",
     },
     {
-      label: "Months",
+      label: "Mois",
       value: globalImpact?.totalMonthsPledged ?? 0,
       prefix: "",
       icon: Zap,
@@ -25,7 +25,7 @@ export function ImpactWall() {
       bgGlow: "from-amber-400/20 to-transparent",
     },
     {
-      label: "Revenue",
+      label: "Revenus",
       value: globalImpact?.totalRevenueWithheld ?? 0,
       prefix: "€",
       icon: Banknote,
@@ -46,18 +46,18 @@ export function ImpactWall() {
         <div className="text-center mb-10 md:mb-16 animate-fade-up">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-widest mb-5 md:mb-6">
             <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-            Live Impact
+            Impact en direct
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter leading-[0.95] mb-4">
-            Hit them where
+            Frappe là où
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">
-              it hurts.
+              ça fait mal.
             </span>
           </h1>
           <p className="text-slate-400 text-base md:text-xl max-w-md md:max-w-xl mx-auto leading-relaxed px-2">
-            Every cancellation counts. Track the collective economic pressure in
-            real-time.
+            Chaque résiliation compte. Suis la pression économique collective en
+            temps réel.
           </p>
         </div>
 

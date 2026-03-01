@@ -14,7 +14,7 @@ export default function Home() {
       <header className="w-full bg-slate-950/80 backdrop-blur-lg border-b border-white/5 sticky top-0 z-50">
         <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
           <div className="font-black text-xl md:text-2xl tracking-tighter text-white cursor-pointer">
-            Waist<span className="text-red-500">Hit</span>
+            Bo<span className="text-red-500">ya</span>
           </div>
           {/* Desktop nav links only */}
           <nav className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-400">
@@ -22,19 +22,19 @@ export default function Home() {
               href="#submit"
               className="hover:text-white transition-colors duration-200"
             >
-              Submit
+              Soumettre
             </a>
             <a
               href="#campaigns"
               className="hover:text-white transition-colors duration-200"
             >
-              Campaigns
+              Mouvements
             </a>
             <a
               href="#feed"
               className="hover:text-white transition-colors duration-200"
             >
-              Feed
+              Fil d'actu
             </a>
           </nav>
           <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ export default function Home() {
             <CreateCampaignDialog />
             <a href="#submit">
               <Button className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold rounded-full h-10 md:h-11 px-4 md:px-5 text-sm shadow-lg shadow-red-600/20">
-                Submit
+                Soumettre
               </Button>
             </a>
           </div>
@@ -64,7 +64,7 @@ export default function Home() {
         <div className="container mx-auto px-5 relative z-10">
           <div className="text-center mb-8 md:mb-12 animate-fade-up">
             <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-3">
-              Ready to make your
+              Prêt à faire ton
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
                 {" "}
                 impact
@@ -72,8 +72,8 @@ export default function Home() {
               ?
             </h2>
             <p className="text-slate-500 text-sm md:text-base max-w-md mx-auto">
-              Every cancellation adds up. Submit yours to increase the
-              collective pressure.
+              Chaque résiliation compte. Soumets la tienne pour renforcer la
+              pression collective.
             </p>
             <ArrowDown className="h-5 w-5 text-red-500 mx-auto mt-4 animate-bounce" />
           </div>
@@ -95,17 +95,17 @@ export default function Home() {
       <footer className="w-full py-8 md:py-10 bg-slate-950 text-slate-500 border-t border-white/5 safe-bottom">
         <div className="container mx-auto px-5 flex flex-col items-center gap-4 md:flex-row md:justify-between">
           <div className="font-black text-xl tracking-tighter text-white/30">
-            Waist<span className="text-red-500/50">Hit</span>
+            Bo<span className="text-red-500/50">ya</span>
           </div>
           <p className="text-xs text-slate-600 text-center">
-            © {new Date().getFullYear()} WaistHit. Hit them at the waist.
+            © {new Date().getFullYear()} Boya. Frappe au portefeuille.
           </p>
           <div className="flex gap-6 text-xs text-slate-600">
             <a href="#" className="hover:text-slate-400 transition-colors py-2">
-              About
+              À propos
             </a>
             <a href="#" className="hover:text-slate-400 transition-colors py-2">
-              Privacy
+              Confidentialité
             </a>
             <a href="#" className="hover:text-slate-400 transition-colors py-2">
               GitHub

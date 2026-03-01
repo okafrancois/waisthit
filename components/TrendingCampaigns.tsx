@@ -3,9 +3,16 @@
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, AlertCircle, Target } from "lucide-react";
 import Link from "next/link";
+
+const CAMPAIGN_TYPE_LABELS: Record<string, string> = {
+  desabonnement: "Désabonnement",
+  unfollow: "Unfollow",
+  boycott: "Boycott",
+};
 
 export function TrendingCampaigns() {
   const campaigns = useQuery(api.actions_api.getTrendingCampaigns);
@@ -34,23 +41,24 @@ export function TrendingCampaigns() {
           <div className="flex items-center gap-2 text-red-600 mb-2">
             <TrendingUp className="h-5 w-5" />
             <span className="text-xs font-bold uppercase tracking-widest">
-              Trending Now
+              En ce moment
             </span>
           </div>
           <div className="flex items-end justify-between">
             <div>
               <h2 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
-                Active Movements
+                Mouvements actifs
               </h2>
               <p className="text-slate-500 text-sm md:text-base mt-1 max-w-md">
-                Join the campaigns making the biggest economic impact.
+                Rejoins les campagnes qui génèrent le plus d&apos;impact
+                économique.
               </p>
             </div>
             <Button
               variant="outline"
               className="hidden md:flex gap-2 rounded-full border-slate-300 min-h-[44px]"
             >
-              Browse All <ArrowRight className="h-4 w-4" />
+              Voir tout <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -59,10 +67,10 @@ export function TrendingCampaigns() {
           <div className="text-center py-16 border-2 border-dashed border-slate-200 rounded-2xl animate-fade-in">
             <AlertCircle className="h-10 w-10 text-slate-300 mx-auto mb-4" />
             <p className="text-slate-500 text-lg font-medium">
-              No campaigns yet.
+              Aucun mouvement pour l&apos;instant.
             </p>
             <p className="text-slate-400 text-sm mt-1">
-              Be the first to start a movement.
+              Sois le premier à en lancer un.
             </p>
           </div>
         : <div className="space-y-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:space-y-0 stagger-children">
@@ -78,12 +86,38 @@ export function TrendingCampaigns() {
                   <h4 className="font-black text-lg md:text-2xl uppercase tracking-wider truncate relative z-10">
                     {campaign.targetName}
                   </h4>
+                  <Badge className="mt-2 bg-white/10 text-white/70 border-0 rounded-full text-[10px] font-semibold uppercase tracking-wider">
+                    {CAMPAIGN_TYPE_LABELS[campaign.campaignType] ||
+                      campaign.campaignType}
+                  </Badge>
                 </div>
 
                 <CardContent className="p-5 md:pt-6 bg-white">
-                  <h5 className="font-semibold text-base md:text-lg text-slate-900 line-clamp-1 mb-4">
+                  <h5 className="font-semibold text-base md:text-lg text-slate-900 line-clamp-1 mb-3">
                     {campaign.title}
                   </h5>
+
+                  {/* Action type badges */}
+                  {campaign.actionTypes?.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {campaign.actionTypes
+                        .slice(0, 3)
+                        .map((at: any, i: number) => (
+                          <Badge
+                            key={i}
+                            className="bg-slate-100 text-slate-600 border-0 rounded-full text-[11px] font-medium px-2.5 py-1"
+                          >
+                            {at.label}
+                          </Badge>
+                        ))}
+                      {campaign.actionTypes.length > 3 && (
+                        <Badge className="bg-slate-100 text-slate-400 border-0 rounded-full text-[11px] font-medium px-2.5 py-1">
+                          +{campaign.actionTypes.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-400 text-sm font-medium">
@@ -108,7 +142,7 @@ export function TrendingCampaigns() {
                 <CardFooter className="bg-white px-5 pb-5 md:pb-6">
                   <Link href={`/campaign/${campaign._id}`} className="w-full">
                     <Button className="w-full h-12 md:h-11 rounded-full bg-slate-900 hover:bg-red-600 active:bg-red-700 transition-colors duration-300 font-bold tracking-wide text-base md:text-sm">
-                      Join Movement <ArrowRight className="ml-2 h-4 w-4" />
+                      Rejoindre <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 </CardFooter>
@@ -123,7 +157,7 @@ export function TrendingCampaigns() {
             variant="outline"
             className="w-full h-12 rounded-full border-slate-300 font-bold text-base"
           >
-            Browse All Campaigns <ArrowRight className="ml-2 h-4 w-4" />
+            Voir tous les mouvements <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>

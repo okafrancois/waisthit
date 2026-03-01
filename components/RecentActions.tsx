@@ -5,7 +5,14 @@ import { api } from "../convex/_generated/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
-import { CheckCircle2, Clock, ImageOff, ShieldCheck } from "lucide-react";
+import { fr } from "date-fns/locale";
+import {
+  CheckCircle2,
+  Clock,
+  ImageOff,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 
 export function RecentActions() {
   const actions = useQuery(api.actions_api.getRecentActions);
@@ -19,11 +26,11 @@ export function RecentActions() {
           <div className="flex items-center gap-2 text-slate-400 mb-2">
             <ShieldCheck className="h-5 w-5" />
             <span className="text-xs font-bold uppercase tracking-widest">
-              Community Feed
+              Fil communautaire
             </span>
           </div>
           <h2 className="text-2xl md:text-4xl font-black text-slate-900 tracking-tight">
-            Recent Actions
+            Actions récentes
           </h2>
         </div>
 
@@ -47,25 +54,32 @@ export function RecentActions() {
                 >
                   {action.status === "verified" ?
                     <span className="flex items-center gap-1">
-                      <CheckCircle2 className="h-3 w-3" /> Verified
+                      <CheckCircle2 className="h-3 w-3" /> Vérifié
                     </span>
                   : <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" /> Pending
+                      <Clock className="h-3 w-3" /> En attente
                     </span>
                   }
                 </Badge>
+
+                {action.isCustomAction && (
+                  <Badge className="absolute top-3 right-3 z-20 rounded-full px-2 py-1 text-[10px] font-bold border-0 bg-amber-400/90 text-amber-900">
+                    <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                    Perso
+                  </Badge>
+                )}
 
                 {action.proofUrl ?
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={action.proofUrl}
-                    alt="Proof screenshot"
+                    alt="Preuve"
                     className="absolute inset-0 w-full h-full object-cover blur-[3px] group-hover:blur-0 transition-all duration-500 scale-105 group-hover:scale-100"
                   />
                 : <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-300 z-0">
                     <ImageOff className="h-8 w-8 mb-2 opacity-40" />
                     <span className="text-[11px] uppercase tracking-widest font-semibold opacity-50">
-                      Anonymous
+                      Anonyme
                     </span>
                   </div>
                 }
@@ -75,22 +89,16 @@ export function RecentActions() {
               <CardContent className="p-4 md:p-4 bg-white">
                 <div className="space-y-1.5">
                   <h4 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                    <span className="text-red-500">
-                      {action.actionType === "cancelled" && "Cancelled"}
-                      {action.actionType === "paused" && "Paused"}
-                      {action.actionType === "unfollowed" && "Unfollowed"}
-                    </span>
+                    <span className="text-red-500">{action.actionType}</span>
                     {action.targetName}
                   </h4>
                   <p className="text-xs text-slate-400 font-medium">
-                    {action.actionType === "unfollowed" ?
-                      "Social unfollow"
-                    : `${action.impactMultiplier} month${action.impactMultiplier > 1 ? "s" : ""} · €${action.computedImpact.toLocaleString()}`
-                    }
+                    {`${action.impactMultiplier} mois · €${action.computedImpact.toLocaleString()}`}
                   </p>
                   <p className="text-[11px] text-slate-300 pt-0.5">
                     {formatDistanceToNow(action._creationTime, {
                       addSuffix: true,
+                      locale: fr,
                     })}
                   </p>
                 </div>

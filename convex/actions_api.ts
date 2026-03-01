@@ -6,7 +6,17 @@ export const createCampaign = mutation({
   args: {
     title: v.string(),
     targetName: v.string(),
-    type: v.union(v.literal("paid_subscription"), v.literal("social_follower")),
+    campaignType: v.union(
+      v.literal("desabonnement"),
+      v.literal("unfollow"),
+      v.literal("boycott"),
+    ),
+    actionTypes: v.array(
+      v.object({
+        label: v.string(),
+        impactValue: v.number(),
+      }),
+    ),
     estimatedValue: v.number(),
   },
   handler: async (ctx, args) => {
@@ -68,40 +78,53 @@ export const generateUploadUrl = mutation(async (ctx) => {
 export const submitAction = mutation({
   args: {
     campaignId: v.id("campaigns"),
-    actionType: v.union(
-      v.literal("cancelled"),
-      v.literal("paused"),
-      v.literal("unfollowed"),
-    ),
+    actionType: v.string(),
+    isCustomAction: v.boolean(),
     impactMultiplier: v.number(),
     proofStorageId: v.optional(v.id("_storage")),
   },
   handler: async (ctx, args) => {
     const campaign = await ctx.db.get(args.campaignId);
-    if (!campaign) throw new Error("Campaign non trouvée.");
+    if (!campaign) throw new Error("Mouvement non trouvé.");
 
     // BetterAuth session integration check for optional user
     const authData = await authComponent.getAuthUser(ctx);
     const userId = authData?._id ?? undefined;
 
-    const computedImpact =
-      args.actionType === "unfollowed" ?
-        campaign.estimatedValue
-      : campaign.estimatedValue * args.impactMultiplier;
+    // Find matching action type for impact calculation
+    const matchingAction = campaign.actionTypes.find(
+      (at) => at.label === args.actionType,
+    );
+    const baseImpact = matchingAction?.impactValue ?? campaign.estimatedValue;
+    const computedImpact = baseImpact * args.impactMultiplier;
 
     const actionId = await ctx.db.insert("actions", {
       campaignId: args.campaignId,
       userId,
       actionType: args.actionType,
+      isCustomAction: args.isCustomAction,
       impactMultiplier: args.impactMultiplier,
       computedImpact,
       proofStorageId: args.proofStorageId,
-      status: "pending", // Waiting for manual or AI verification
+      status: "pending",
     });
 
-    // Option: On pourrait directement incrémenter les stats pour cette démo.
-    // Habituellement on le fait SEULEMENT après validation ("verified") !
-    // Pour que le UI du mur bouge en dev, on commente cette protection :
+    // If custom action, add it to the campaign's actionTypes so others can reuse
+    if (args.isCustomAction) {
+      const alreadyExists = campaign.actionTypes.some(
+        (at) => at.label.toLowerCase() === args.actionType.toLowerCase(),
+      );
+      if (!alreadyExists) {
+        await ctx.db.patch(args.campaignId, {
+          actionTypes: [
+            ...campaign.actionTypes,
+            { label: args.actionType, impactValue: baseImpact },
+          ],
+        });
+      }
+    }
+
+    // Update campaign metrics (simplified for demo — ideally after verification)
     await ctx.db.patch(args.campaignId, {
       metrics: {
         totalVerifiedActions: campaign.metrics.totalVerifiedActions + 1,
@@ -149,7 +172,7 @@ export const getGlobalImpact = query({
     return {
       totalActions,
       totalRevenueWithheld,
-      totalMonthsPledged: totalActions, // Simplified for demo
+      totalMonthsPledged: totalActions,
     };
   },
 });

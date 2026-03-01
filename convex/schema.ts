@@ -5,7 +5,17 @@ export default defineSchema({
   campaigns: defineTable({
     targetName: v.string(),
     title: v.string(),
-    type: v.union(v.literal("paid_subscription"), v.literal("social_follower")),
+    campaignType: v.union(
+      v.literal("desabonnement"),
+      v.literal("unfollow"),
+      v.literal("boycott"),
+    ),
+    actionTypes: v.array(
+      v.object({
+        label: v.string(),
+        impactValue: v.number(),
+      }),
+    ),
     estimatedValue: v.number(),
     metrics: v.object({
       totalVerifiedActions: v.number(),
@@ -14,13 +24,10 @@ export default defineSchema({
   }),
   actions: defineTable({
     campaignId: v.id("campaigns"),
-    userId: v.optional(v.string()), // Optional for anonymous submissions
-    actionType: v.union(
-      v.literal("cancelled"),
-      v.literal("paused"),
-      v.literal("unfollowed"),
-    ),
-    impactMultiplier: v.number(), // Extrapolated from months impact
+    userId: v.optional(v.string()),
+    actionType: v.string(),
+    isCustomAction: v.boolean(),
+    impactMultiplier: v.number(),
     computedImpact: v.number(),
     proofStorageId: v.optional(v.id("_storage")),
     status: v.union(
